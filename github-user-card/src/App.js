@@ -10,7 +10,8 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.getUser()
+    this.getUser();
+    this.getFollowers();
   }
 
   getUser() {
@@ -19,8 +20,14 @@ class App extends React.Component {
       .then(response => this.setState({ user: response.data }))
   }
 
+  getFollowers() {
+    axios
+      .get('https://api.github.com/users/teddyhn/followers')
+      .then(response => this.setState( { followers: response.data }))
+  }
+
   render() {
-    console.log(this.state.user);
+    console.log(this.state.followers);
 
     return (
       <div className="App">
@@ -29,6 +36,10 @@ class App extends React.Component {
         <h2>{this.state.user.name}</h2>
         <h3>{this.state.user.bio}</h3>
         <h3>{this.state.user.location}</h3>
+        <h4>Followers:</h4>
+        {this.state.followers.map(follower => (
+            <p>{follower.login}</p>
+          ))}
       </div>
     )
   }
