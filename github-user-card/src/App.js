@@ -27,18 +27,17 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.followers);
-
+    const { user, followers } = this.state;
     return (
       <div className="App">
         <div className="card">
-          <h1>Github User: {this.state.user.login}'s Card</h1>
-          <img src={this.state.user.avatar_url} />
-          <h2>{this.state.user.name}</h2>
-          <h3>{this.state.user.bio}</h3>
-          <h3>{this.state.user.location}</h3>
+          <h1>Github User: {user.login}'s Card</h1>
+          <img src={user.avatar_url} />
+          <h2>{user.name}</h2>
+          <h3>{user.bio}</h3>
+          <h3>{user.location}</h3>
           <h4>Followers:</h4>
-          {this.state.followers.map(follower => (
+          {followers.map(follower => (
               <p>{follower.login}</p>
             ))}
         </div>
