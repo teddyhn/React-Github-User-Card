@@ -16,13 +16,19 @@ class App extends React.Component {
   getUser() {
     axios
       .get('https://api.github.com/users/teddyhn')
-      .then(response => this.setState())
+      .then(response => this.setState({ user: response.data }))
   }
 
   render() {
+    console.log(this.state.user);
+
     return (
       <div className="App">
-        App goes here
+        <h1>Github User: {this.state.user.login}'s Card</h1>
+        <img src={this.state.user.avatar_url} />
+        <h2>{this.state.user.name}</h2>
+        <h3>{this.state.user.bio}</h3>
+        <h3>{this.state.user.location}</h3>
       </div>
     )
   }
