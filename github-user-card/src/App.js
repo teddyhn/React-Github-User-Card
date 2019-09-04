@@ -14,6 +14,21 @@ class App extends React.Component {
     this.getFollowers();
   }
 
+  async componentDidUpdate(prevState) {
+    if (this.state.searchuser !== prevState.searchuser) {
+      const [firstResponse] = await Promise.all([
+        axios.get(`https://api.github.com/users/${this.state.searchuser}`),
+      ]);
+    
+      const secondResponse = await axios.get(`https://api.github.com/users/${this.state.searchuser}/followers`);
+    
+      this.setState({
+        user: firstResponse.data,
+        followers: secondResponse.data,
+      });
+    }
+  }
+
   getUser() {
     axios
       .get('https://api.github.com/users/teddyhn')
@@ -26,10 +41,31 @@ class App extends React.Component {
       .then(response => this.setState( { followers: response.data }))
   }
 
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  fetchUser = e => {
+    e.preventDefault();
+    this.setState({ searchuser: this.state.username })
+  };
+
   render() {
     const { user, followers } = this.state;
     return (
       <div className="App">
+        <form>
+          <input
+            type="text"
+            value={this.state.username}
+            onChange={this.handleChange}
+            name="username"
+            placeholder="Search GitHub user..."
+          />
+          <button onClick={this.fetchUser}>Get user</button>
+        </form>
         <div className="card">
           <h1>Github User: {user.login}'s Card</h1>
           <img src={user.avatar_url} />
